@@ -1,9 +1,13 @@
 const pieces = {
   paw: {
     name: "white-pawn",
-    pattern: (positionY, positionX) => [[positionY + 1, positionX]],
+    pattern: (positionY, positionX) => {
+      const lookAhead = [game.boardState[positionY + 1][positionX - 1] || [], game.boardState[positionY + 1][positionX], game.boardState[positionY + 1][positionX + 1] || []];
+      return [lookAhead[0][0] ? [positionY + 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY + 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY + 1, positionX + 1] : [10, 10], positionY === 1 ? [positionY + 2, positionX] : [10, 10]];
+    },
     color: "white",
     colorId: 1,
+    initial: true,
   },
   knw: {
     name: "white-knight",
@@ -19,6 +23,7 @@ const pieces = {
     ],
     color: "white",
     colorId: 1,
+    initial: true,
   },
   biw: {
     name: "white-bishop",
@@ -46,6 +51,7 @@ const pieces = {
     ],
     color: "white",
     colorId: 1,
+    initial: true,
   },
   row: {
     name: "white-rooks",
@@ -73,6 +79,7 @@ const pieces = {
     ],
     color: "white",
     colorId: 1,
+    initial: true,
   },
   quw: {
     name: "white-queen",
@@ -120,6 +127,7 @@ const pieces = {
     ],
     color: "white",
     colorId: 1,
+    initial: true,
   },
   kiw: {
     name: "white-king",
@@ -135,9 +143,18 @@ const pieces = {
     ],
     color: "white",
     colorId: 1,
+    initial: true,
   },
 
-  pab: { name: "black-pawn", pattern: (positionY, positionX) => [[positionY - 1, positionX]], color: "black", colorId: -1 },
+  pab: {
+    name: "black-pawn",
+    pattern: (positionY, positionX) => {
+      const lookAhead = [game.boardState[positionY - 1][positionX - 1] || [], game.boardState[positionY + 1][positionX], game.boardState[positionY - 1][positionX + 1] || []];
+      return [lookAhead[0][0] ? [positionY - 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY - 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY - 1, positionX + 1] : [10, 10], positionY === 6 ? [positionY - 2, positionX] : [10, 10]];
+    },
+    color: "black",
+    colorId: -1,
+  },
   knb: {
     name: "black-knight",
     pattern: (positionY, positionX) => [
@@ -152,6 +169,7 @@ const pieces = {
     ],
     color: "black",
     colorId: -1,
+    initial: true,
   },
   bib: {
     name: "black-bishop",
@@ -179,6 +197,7 @@ const pieces = {
     ],
     color: "black",
     colorId: -1,
+    initial: true,
   },
   rob: {
     name: "black-rooks",
@@ -206,6 +225,7 @@ const pieces = {
     ],
     color: "black",
     colorId: -1,
+    initial: true,
   },
   qub: {
     name: "black-queen",
@@ -253,6 +273,7 @@ const pieces = {
     ],
     color: "black",
     colorId: -1,
+    initial: true,
   },
   kib: {
     name: "black-king",
@@ -268,6 +289,7 @@ const pieces = {
     ],
     color: "black",
     colorId: -1,
+    initial: true,
   },
 };
 
@@ -318,12 +340,12 @@ for (field of boardHTML) {
       if (game.currentSelection && game.validMovesArray.some((x) => JSON.stringify(x) === JSON.stringify([positionY, positionX]))) {
         game.boardState[positionY][positionX] = [game.currentSelection];
         game.boardState[game.currentLocation[0]][game.currentLocation[1]] = [];
+        pieces[game.currentSelection].initial = false;
         renderer();
         game.currentSelection = null;
         game.currentPlayer = game.currentPlayer * -1;
         document.querySelector("#gameStats").innerHTML = game.currentPlayer === 1 ? "WHITE" : "BLACK";
       } else {
-        console.log("invalid move");
       }
     }
   });
