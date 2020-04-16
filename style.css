@@ -1,47 +1,57 @@
 body {
-  text-align: center;
+	text-align: center;
+}
+
+#area1 {
+	display: flex;
+	text-align: center;
+	justify-content: space-evenly;
 }
 
 main {
-  display: grid;
-  grid-template-columns: repeat(8, 80px);
-  grid-template-rows: repeat(8, 80px);
-  --background: rgb(151, 106, 80);
-  border: 2px black solid;
-  width: 640px;
-  margin: auto;
+	display: grid;
+	grid-template-columns: repeat(8, 100px);
+	grid-template-rows: repeat(8, 100px);
+	--background: rgba(151, 106, 80, 0.623);
+	background-color: rgba(197, 186, 164, 0.425);
+	border: 4px rgb(148, 148, 148) solid;
+	width: 800px;
 }
 
 [data-column="0"]:nth-child(odd) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="1"]:nth-child(even) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="2"]:nth-child(odd) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="3"]:nth-child(even) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="4"]:nth-child(odd) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="5"]:nth-child(even) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="6"]:nth-child(odd) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 [data-column="7"]:nth-child(even) {
-  background-color: var(--background);
+	background-color: var(--background);
 }
 
 .field {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #gameStats {
+}
+
+.pieces {
+	width: 70%;
 }
