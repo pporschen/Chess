@@ -296,9 +296,12 @@ const pieces = {
 class Game {
   constructor() {
     this.currentPlayer = 1;
+    this.blackLost = [];
+    this.whiteLost = [];
     this.currentSelection;
     this.currentLocation;
     this.validMovesArray;
+    this.boardHistory = [];
     this.boardState = [
       [["row"], ["knw"], ["biw"], ["quw"], ["kiw"], ["biw"], ["knw"], ["row"]],
       [["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"]],
@@ -341,9 +344,12 @@ for (field of boardHTML) {
         game.boardState[positionY][positionX] = [game.currentSelection];
         game.boardState[game.currentLocation[0]][game.currentLocation[1]] = [];
         pieces[game.currentSelection].initial = false;
+        const hit = event.currentTarget.textContent;
         renderer();
         game.currentSelection = null;
         game.currentPlayer = game.currentPlayer * -1;
+        if (hit) game[game.currentPlayer === 1 ? "whiteLost" : "blackLost"].push(hit);
+        game.boardHistory.push(game.boardState);
         document.querySelector("#gameStats").innerHTML = game.currentPlayer === 1 ? "WHITE" : "BLACK";
       } else {
       }
