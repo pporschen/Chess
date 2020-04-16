@@ -35,7 +35,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: "/img/knight_white.png",
+		img: "./img/knight_white.png",
 	},
 	biw: {
 		name: "white-bishop",
@@ -64,7 +64,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: "/img/bishop_white.png",
+		img: "./img/bishop_white.png",
 	},
 	row: {
 		name: "white-rooks",
@@ -93,7 +93,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: "/img/rook_white.png",
+		img: "./img/rook_white.png",
 	},
 	quw: {
 		name: "white-queen",
@@ -142,7 +142,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: "/img/queen_white.png",
+		img: "./img/queen_white.png",
 	},
 	kiw: {
 		name: "white-king",
@@ -159,7 +159,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: "/img/king_white.png",
+		img: "./img/king_white.png",
 	},
 
 	pab: {
@@ -180,7 +180,7 @@ const pieces = {
 		},
 		color: "black",
 		colorId: -1,
-		img: "/img/pawn_black.png",
+		img: "./img/pawn_black.png",
 	},
 	knb: {
 		name: "black-knight",
@@ -197,7 +197,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		initial: true,
-		img: "/img/knight_black.png",
+		img: "./img/knight_black.png",
 	},
 	bib: {
 		name: "black-bishop",
@@ -226,7 +226,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		initial: true,
-		img: "/img/bishop_black.png",
+		img: "./img/bishop_black.png",
 	},
 	rob: {
 		name: "black-rooks",
@@ -255,7 +255,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		initial: true,
-		img: "/img/rook_black.png",
+		img: "./img/rook_black.png",
 	},
 	qub: {
 		name: "black-queen",
@@ -304,7 +304,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		initial: true,
-		img: "/img/queen_black.png",
+		img: "./img/queen_black.png",
 	},
 	kib: {
 		name: "black-king",
@@ -321,7 +321,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		initial: true,
-		img: "/img/king_black.png",
+		img: "./img/king_black.png",
 	},
 };
 
