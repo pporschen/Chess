@@ -2,8 +2,8 @@ const pieces = {
   paw: {
     name: "white-pawn",
     pattern: (positionY, positionX) => {
-      const lookAhead = [game.boardState[positionY + 1][positionX - 1] || [], game.boardState[positionY + 1][positionX], game.boardState[positionY + 1][positionX + 1] || []];
-      return [lookAhead[0][0] ? [positionY + 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY + 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY + 1, positionX + 1] : [10, 10], positionY === 1 ? [positionY + 2, positionX] : [10, 10]];
+      const lookAhead = [game.boardState[positionY + 1][positionX - 1] || [], game.boardState[positionY + 1][positionX], game.boardState[positionY + 1][positionX + 1] || [], game.boardState[positionY + 2][positionX] || []];
+      return [lookAhead[0][0] ? [positionY + 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY + 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY + 1, positionX + 1] : [10, 10], positionY === 1 && !lookAhead[1][0] && !lookAhead[3][0] ? [positionY + 2, positionX] : [10, 10]];
     },
     color: "white",
     colorId: 1,
@@ -149,8 +149,8 @@ const pieces = {
   pab: {
     name: "black-pawn",
     pattern: (positionY, positionX) => {
-      const lookAhead = [game.boardState[positionY - 1][positionX - 1] || [], game.boardState[positionY + 1][positionX], game.boardState[positionY - 1][positionX + 1] || []];
-      return [lookAhead[0][0] ? [positionY - 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY - 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY - 1, positionX + 1] : [10, 10], positionY === 6 ? [positionY - 2, positionX] : [10, 10]];
+      const lookAhead = [game.boardState[positionY - 1][positionX - 1] || [], game.boardState[positionY - 1][positionX], game.boardState[positionY - 1][positionX + 1] || [], game.boardState[positionY - 2][positionX] || []];
+      return [lookAhead[0][0] ? [positionY - 1, positionX - 1] : [10, 10], !lookAhead[1][0] ? [positionY - 1, positionX] : [10, 10], lookAhead[2][0] ? [positionY - 1, positionX + 1] : [10, 10], positionY === 6 && !lookAhead[1][0] && !lookAhead[3][0] ? [positionY - 2, positionX] : [10, 10]];
     },
     color: "black",
     colorId: -1,
