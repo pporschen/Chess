@@ -1,0 +1,47 @@
+body {
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(8, 80px);
+  grid-template-rows: repeat(8, 80px);
+  --background: rgb(151, 106, 80);
+  border: 2px black solid;
+  width: 640px;
+  margin: auto;
+}
+
+[data-column="0"]:nth-child(odd) {
+  background-color: var(--background);
+}
+[data-column="1"]:nth-child(even) {
+  background-color: var(--background);
+}
+[data-column="2"]:nth-child(odd) {
+  background-color: var(--background);
+}
+[data-column="3"]:nth-child(even) {
+  background-color: var(--background);
+}
+[data-column="4"]:nth-child(odd) {
+  background-color: var(--background);
+}
+[data-column="5"]:nth-child(even) {
+  background-color: var(--background);
+}
+[data-column="6"]:nth-child(odd) {
+  background-color: var(--background);
+}
+[data-column="7"]:nth-child(even) {
+  background-color: var(--background);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#gameStats {
+}
