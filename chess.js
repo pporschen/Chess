@@ -18,7 +18,7 @@ const pieces = {
 		color: "white",
 		colorId: 1,
 		initial: true,
-		img: ".chess/img/pawn_white.png",
+		img: "./img/pawn_white.png",
 	},
 	knw: {
 		name: "white-knight",
