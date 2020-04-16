@@ -4,7 +4,7 @@ const pieces = {
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
 				game.boardState[positionY + 1][positionX - 1] || [],
-				game.boardState[positionY + 1][positionX],
+				game.boardState[positionY + 1][positionX] || [],
 				game.boardState[positionY + 1][positionX + 1] || [],
 				game.boardState[positionY + 2][positionX] || [],
 			];
@@ -167,7 +167,7 @@ const pieces = {
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
 				game.boardState[positionY - 1][positionX - 1] || [],
-				game.boardState[positionY - 1][positionX],
+				game.boardState[positionY - 1][positionX] || [],
 				game.boardState[positionY - 1][positionX + 1] || [],
 				game.boardState[positionY - 2][positionX] || [],
 			];
