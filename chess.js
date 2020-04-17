@@ -4,10 +4,11 @@ const pieces = {
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
 				game.boardState[positionY + 1][positionX - 1] || [],
-				game.boardState[positionY + 1][positionX] || [],
+				game.boardState[positionY + 1] ? game.boardState[positionY + 1][positionX] : [],
 				game.boardState[positionY + 1][positionX + 1] || [],
-				game.boardState[positionY + 2][positionX] || [],
+				game.boardState[positionY + 2] ? game.boardState[positionY + 2][positionX] : [],
 			];
+
 			return [
 				lookAhead[0][0] ? [positionY + 1, positionX - 1] : [10, 10],
 				!lookAhead[1][0] ? [positionY + 1, positionX] : [10, 10],
@@ -19,6 +20,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/pawn_white.png",
+		rank: 6,
 	},
 	knw: {
 		name: "white-knight",
@@ -36,6 +38,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/knight_white.png",
+		rank: 5,
 	},
 	biw: {
 		name: "white-bishop",
@@ -65,6 +68,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/bishop_white.png",
+		rank: 3,
 	},
 	row: {
 		name: "white-rooks",
@@ -94,6 +98,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/rook_white.png",
+		rank: 4,
 	},
 	quw: {
 		name: "white-queen",
@@ -143,6 +148,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/queen_white.png",
+		rank: 2,
 	},
 	kiw: {
 		name: "white-king",
@@ -160,6 +166,7 @@ const pieces = {
 		colorId: 1,
 		initial: true,
 		img: "./img/king_white.png",
+		rank: 1,
 	},
 
 	pab: {
@@ -167,9 +174,9 @@ const pieces = {
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
 				game.boardState[positionY - 1][positionX - 1] || [],
-				game.boardState[positionY - 1][positionX] || [],
+				game.boardState[positionY - 1] ? game.boardState[positionY - 1][positionX] : [],
 				game.boardState[positionY - 1][positionX + 1] || [],
-				game.boardState[positionY - 2][positionX] || [],
+				game.boardState[positionY - 2] ? game.boardState[positionY - 2][positionX] : [],
 			];
 			return [
 				lookAhead[0][0] ? [positionY - 1, positionX - 1] : [10, 10],
@@ -181,6 +188,7 @@ const pieces = {
 		color: "black",
 		colorId: -1,
 		img: "./img/pawn_black.png",
+		rank: 6,
 	},
 	knb: {
 		name: "black-knight",
@@ -198,6 +206,7 @@ const pieces = {
 		colorId: -1,
 		initial: true,
 		img: "./img/knight_black.png",
+		rank: 5,
 	},
 	bib: {
 		name: "black-bishop",
@@ -227,6 +236,7 @@ const pieces = {
 		colorId: -1,
 		initial: true,
 		img: "./img/bishop_black.png",
+		rank: 3,
 	},
 	rob: {
 		name: "black-rooks",
@@ -256,6 +266,7 @@ const pieces = {
 		colorId: -1,
 		initial: true,
 		img: "./img/rook_black.png",
+		rank: 4,
 	},
 	qub: {
 		name: "black-queen",
@@ -305,6 +316,7 @@ const pieces = {
 		colorId: -1,
 		initial: true,
 		img: "./img/queen_black.png",
+		rank: 2,
 	},
 	kib: {
 		name: "black-king",
@@ -322,6 +334,7 @@ const pieces = {
 		colorId: -1,
 		initial: true,
 		img: "./img/king_black.png",
+		rank: 1,
 	},
 };
 
@@ -362,16 +375,34 @@ const renderer = () => {
 			else boardHTML[index].innerHTML = '<div data-name=""></div>';
 		}
 	}
+	statsRenderer();
 };
+
+const statsRenderer = () => {
+	game.whiteLost.sort((a, b) => pieces[a].rank - pieces[b].rank);
+	game.blackLost.sort((a, b) => pieces[a].rank - pieces[b].rank);
+	document.querySelector("#white-lost").innerHTML = "";
+	document.querySelector("#black-lost").innerHTML = "";
+	for (let piece in game.whiteLost) {
+		document
+			.querySelector("#white-lost")
+			.insertAdjacentHTML("beforeend", `<img class = "stats-pic" src = "${pieces[game.whiteLost[piece]].img}">`);
+	}
+	for (let piece in game.blackLost) {
+		document
+			.querySelector("#black-lost")
+			.insertAdjacentHTML("beforeend", `<img class = "stats-pic" src = "${pieces[game.blackLost[piece]].img}">`);
+	}
+};
+
+const StatusRenderer = () => {};
 
 // where the action happens
 for (field of boardHTML) {
 	field.addEventListener("click", (event) => {
 		let piece = event.currentTarget.children[0].dataset.name;
-		console.log(piece);
 		const positionX = parseInt(event.currentTarget.dataset.row);
 		const positionY = parseInt(event.currentTarget.dataset.column);
-
 		if (piece && pieces[piece].colorId === game.currentPlayer) {
 			game.currentSelection = event.currentTarget.children[0].dataset.name;
 			game.currentLocation = [positionY, positionX];
@@ -385,14 +416,12 @@ for (field of boardHTML) {
 				game.boardState[game.currentLocation[0]][game.currentLocation[1]] = [];
 				pieces[game.currentSelection].initial = false;
 				const hit = event.currentTarget.children[0].dataset.name;
+				if (hit) game[game.currentPlayer === 1 ? "blackLost" : "whiteLost"].push(hit);
 				renderer();
 				game.currentSelection = null;
 				game.currentPlayer = game.currentPlayer * -1;
-				if (hit) game[game.currentPlayer === 1 ? "whiteLost" : "blackLost"].push(hit);
+
 				game.boardHistory.push(game.boardState);
-				document.querySelector("#gameStats").innerHTML = game.currentPlayer === 1 ? "WHITE" : "BLACK";
-				document.querySelector("#whiteStats").innerHTML = game.whiteLost;
-				document.querySelector("#blackStats").innerHTML = game.blackLost;
 			} else {
 			}
 		}
@@ -408,7 +437,6 @@ const validMoves = (positionY, positionX) => {
 	if (result[0][0].length > 1) {
 		result = validMovesHelper(result);
 	}
-	console.log(result);
 	return result;
 };
 
@@ -419,7 +447,7 @@ const validMovesHelper = (result) => {
 	result.map((y, i) => {
 		y.map((x, j) => {
 			if (!check[i].includes(3)) {
-				if (game.boardState[x[0]][x[1]][0] === game.currentSelection) {
+				if (x[0] === game.currentLocation[0] && x[1] === game.currentLocation[1]) {
 					check[i].push(2);
 				} else if (game.boardState[x[0]][x[1]][0]) {
 					if (!check[i].includes(2)) {

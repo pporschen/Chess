@@ -49,9 +49,19 @@ main {
 	justify-content: center;
 }
 
-#gameStats {
+.stats {
+	width: 300px;
 }
 
 .pieces {
 	width: 70%;
 }
+
+.stats-pic {
+	width: 15%;
+}
+
+/* .stats {
+	display: grid;
+	grid-template-columns: 1fr;
+} */
