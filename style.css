@@ -1,5 +1,7 @@
 body {
 	text-align: center;
+	font-family: "Taviraj", serif;
+	font-weight: 500;
 }
 
 #area1 {
@@ -47,6 +49,7 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
 .stats {
@@ -61,7 +64,6 @@ main {
 	width: 15%;
 }
 
-/* .stats {
-	display: grid;
-	grid-template-columns: 1fr;
-} */
+#warning {
+	color: red;
+}

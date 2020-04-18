@@ -1,3 +1,6 @@
+import { Renderer } from "./renderer.js";
+import { Game } from "./game.js";
+
 const pieces = {
 	paw: {
 		name: "white-pawn",
@@ -337,134 +340,34 @@ const pieces = {
 		rank: 1,
 	},
 };
-
-class Game {
-	constructor() {
-		this.currentPlayer = 1;
-		this.blackLost = [];
-		this.whiteLost = [];
-		this.currentSelection;
-		this.currentLocation;
-		this.validMovesArray;
-		this.boardHistory = [];
-		this.boardState = [
-			[["row"], ["knw"], ["biw"], ["quw"], ["kiw"], ["biw"], ["knw"], ["row"]],
-			[["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"]],
-			[[], [], [], [], [], [], [], []],
-			[[], [], [], [], [], [], [], []],
-			[[], [], [], [], [], [], [], []],
-			[[], [], [], [], [], [], [], []],
-			[["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"]],
-			[["rob"], ["knb"], ["bib"], ["qub"], ["kib"], ["bib"], ["knb"], ["rob"]],
-		];
-	}
-}
-
-const game = new Game();
 const boardHTML = document.querySelectorAll(".field");
+const game = new Game(pieces);
+const renderer = new Renderer(game, pieces);
 
-// render board state
-const renderer = () => {
-	for (rows in game.boardState) {
-		for (columns in game.boardState[rows]) {
-			const index = rows * 8 + columns * 1;
-			if (pieces[game.boardState[rows][columns]])
-				boardHTML[index].innerHTML = `<img class="pieces" data-name="${game.boardState[rows][columns]}" src="${
-					pieces[game.boardState[rows][columns]].img
-				}">`;
-			else boardHTML[index].innerHTML = '<div data-name=""></div>';
-		}
-	}
-	statsRenderer();
-};
-
-const statsRenderer = () => {
-	game.whiteLost.sort((a, b) => pieces[a].rank - pieces[b].rank);
-	game.blackLost.sort((a, b) => pieces[a].rank - pieces[b].rank);
-	document.querySelector("#white-lost").innerHTML = "";
-	document.querySelector("#black-lost").innerHTML = "";
-	for (let piece in game.whiteLost) {
-		document
-			.querySelector("#white-lost")
-			.insertAdjacentHTML("beforeend", `<img class = "stats-pic" src = "${pieces[game.whiteLost[piece]].img}">`);
-	}
-	for (let piece in game.blackLost) {
-		document
-			.querySelector("#black-lost")
-			.insertAdjacentHTML("beforeend", `<img class = "stats-pic" src = "${pieces[game.blackLost[piece]].img}">`);
-	}
-};
-
-const StatusRenderer = () => {};
-
-// where the action happens
-for (field of boardHTML) {
+for (let field of boardHTML) {
 	field.addEventListener("click", (event) => {
 		let piece = event.currentTarget.children[0].dataset.name;
 		const positionX = parseInt(event.currentTarget.dataset.row);
 		const positionY = parseInt(event.currentTarget.dataset.column);
+		renderer.renderWarning("");
 		if (piece && pieces[piece].colorId === game.currentPlayer) {
-			game.currentSelection = event.currentTarget.children[0].dataset.name;
-			game.currentLocation = [positionY, positionX];
-			game.validMovesArray = validMoves(positionY, positionX);
+			game.pickPiece(event, positionY, positionX);
 		} else {
 			if (
 				game.currentSelection &&
 				game.validMovesArray.some((x) => JSON.stringify(x) === JSON.stringify([positionY, positionX]))
 			) {
-				game.boardState[positionY][positionX] = [game.currentSelection];
-				game.boardState[game.currentLocation[0]][game.currentLocation[1]] = [];
-				pieces[game.currentSelection].initial = false;
 				const hit = event.currentTarget.children[0].dataset.name;
-				if (hit) game[game.currentPlayer === 1 ? "blackLost" : "whiteLost"].push(hit);
-				renderer();
-				game.currentSelection = null;
-				game.currentPlayer = game.currentPlayer * -1;
 
+				game.updateGameStatus(hit, pieces, positionY, positionX);
+
+				renderer.render(game, pieces);
 				game.boardHistory.push(game.boardState);
 			} else {
+				renderer.renderWarning("INVALID MOVE");
 			}
 		}
 	});
 }
 
-renderer();
-
-// construction an array of valid moves
-const validMoves = (positionY, positionX) => {
-	let result = pieces[game.currentSelection].pattern(positionY, positionX);
-
-	if (result[0][0].length > 1) {
-		result = validMovesHelper(result);
-	}
-	return result;
-};
-
-const validMovesHelper = (result) => {
-	result = result.map((y) => y.filter((x) => x[0] < 8 && x[0] >= 0 && x[1] < 8 && x[1] >= 0));
-	let temp = [[], [], [], []];
-	let check = [[], [], [], []];
-	result.map((y, i) => {
-		y.map((x, j) => {
-			if (!check[i].includes(3)) {
-				if (x[0] === game.currentLocation[0] && x[1] === game.currentLocation[1]) {
-					check[i].push(2);
-				} else if (game.boardState[x[0]][x[1]][0]) {
-					if (!check[i].includes(2)) {
-						check[i] = [];
-						temp[i] = [];
-						temp[i].push(result[i][j]);
-						check[i].push(1);
-					} else {
-						temp[i].push(result[i][j]);
-						check[i].push(3);
-					}
-				} else {
-					temp[i].push(result[i][j]);
-					check[i].push(0);
-				}
-			}
-		});
-	});
-	return [...temp[0], ...temp[1], ...temp[2], ...temp[3]];
-};
+renderer.render(game, pieces);
