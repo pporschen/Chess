@@ -1,5 +1,7 @@
 body {
 	text-align: center;
+	font-family: "Taviraj", serif;
+	font-weight: 500;
 }
 
 #area1 {
@@ -47,11 +49,21 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
-#gameStats {
+.stats {
+	width: 300px;
 }
 
 .pieces {
 	width: 70%;
+}
+
+.stats-pic {
+	width: 15%;
+}
+
+#warning {
+	color: red;
 }

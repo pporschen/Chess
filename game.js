@@ -1,0 +1,84 @@
+export class Game {
+	constructor(pieces) {
+		this.currentPlayer = 1;
+		this.blackLost = [];
+		this.whiteLost = [];
+		this.currentSelection;
+		this.currentLocation;
+		this.validMovesArray;
+		this.boardHistory = [];
+		this.boardState = [
+			[["row"], ["knw"], ["biw"], ["quw"], ["kiw"], ["biw"], ["knw"], ["row"]],
+			[["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"]],
+			[[], [], [], [], [], [], [], []],
+			[[], [], [], [], [], [], [], []],
+			[[], [], [], [], [], [], [], []],
+			[[], [], [], [], [], [], [], []],
+			[["pab"], ["paw"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"]],
+			[["rob"], ["knb"], ["bib"], ["qub"], ["kib"], ["bib"], ["knb"], ["rob"]],
+		];
+		this.pieces = pieces;
+	}
+
+	pickPiece(event, positionY, positionX) {
+		this.currentSelection = event.currentTarget.children[0].dataset.name;
+		this.currentLocation = [positionY, positionX];
+		this.validMovesArray = this.validMoves(positionY, positionX);
+	}
+
+	updateGameStatus(hit, pieces, positionY, positionX) {
+		this.boardState[positionY][positionX] = [this.currentSelection];
+		this.promotion(positionY, positionX);
+		this.boardState[this.currentLocation[0]][this.currentLocation[1]] = [];
+		pieces[this.currentSelection].initial = false;
+
+		if (hit) this[this.currentPlayer === 1 ? "blackLost" : "whiteLost"].push(hit);
+
+		this.currentSelection = null;
+		this.currentPlayer = this.currentPlayer * -1;
+	}
+
+	validMoves(positionY, positionX) {
+		let result = this.pieces[this.currentSelection].pattern(positionY, positionX);
+
+		if (result[0][0].length > 1) {
+			result = this.validMovesHelper(result);
+		}
+		return result;
+	}
+
+	validMovesHelper(result) {
+		result = result.map((y) => y.filter((x) => x[0] < 8 && x[0] >= 0 && x[1] < 8 && x[1] >= 0));
+		let temp = [[], [], [], []];
+		let check = [[], [], [], []];
+		result.map((y, i) => {
+			y.map((x, j) => {
+				if (!check[i].includes(3)) {
+					if (x[0] === this.currentLocation[0] && x[1] === this.currentLocation[1]) {
+						check[i].push(2);
+					} else if (this.boardState[x[0]][x[1]][0]) {
+						if (!check[i].includes(2)) {
+							check[i] = [];
+							temp[i] = [];
+							temp[i].push(result[i][j]);
+							check[i].push(1);
+						} else {
+							temp[i].push(result[i][j]);
+							check[i].push(3);
+						}
+					} else {
+						temp[i].push(result[i][j]);
+						check[i].push(0);
+					}
+				}
+			});
+		});
+		return [...temp[0], ...temp[1], ...temp[2], ...temp[3]];
+	}
+
+	promotion(positionY, positionX) {
+		console.log(this.currentLocation);
+		if (this.currentSelection === "paw" && this.currentLocation[0] === 6) this.boardState[positionY][positionX] = "quw";
+		if (this.currentSelection === "pab" && this.currentLocation[0] === 1) this.boardState[positionY][positionX] = "qub";
+	}
+}

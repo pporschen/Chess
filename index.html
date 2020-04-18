@@ -2,12 +2,16 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="style.css" />
+		<link href="https://fonts.googleapis.com/css2?family=Taviraj:wght@300;400;500&display=swap" rel="stylesheet" />
 		<meta charset="UTF-7" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Chess</title>
 	</head>
 	<body>
 		<div id="area1">
+			<div class="stats" id="blackStats">
+				<div id="black-lost"></div>
+			</div>
 			<main>
 				<div class="field" data-column="0" data-row="0"><div data-name=""></div></div>
 				<div class="field" data-column="0" data-row="1"><div data-name=""></div></div>
@@ -81,14 +85,13 @@
 				<div class="field" data-column="7" data-row="6"><div data-name=""></div></div>
 				<div class="field" data-column="7" data-row="7"><div data-name=""></div></div>
 			</main>
+			<div class="stats" id="whiteStats">
+				<div id="white-lost"></div>
+			</div>
 		</div>
 		<h2>Current Turn:</h2>
-		<div id="gameStats">WHITE</div>
-		<h2>Black Lost:</h2>
-		<div id="blackStats"></div>
-		<h2>White Lost:</h2>
-		<div id="whiteStats"></div>
-
-		<script src="chess.js"></script>
+		<div id="turn">WHITE</div>
+		<div id="warning"></div>
+		<script src="chess.js" type="module"></script>
 	</body>
 </html>
