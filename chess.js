@@ -377,6 +377,7 @@ const pieces = {
 const boardHTML = document.querySelectorAll(".field");
 const game = new Game(pieces);
 const renderer = new Renderer(game, pieces);
+const undo = document.querySelector("#undo");
 
 for (let field of boardHTML) {
 	field.addEventListener("click", (event) => {
@@ -395,7 +396,6 @@ for (let field of boardHTML) {
 
 				game.updateGameStatus(hit, pieces, positionY, positionX);
 				renderer.render(game, pieces);
-				game.boardHistory.push(game.boardState);
 			} else {
 				renderer.renderWarning("INVALID MOVE");
 			}

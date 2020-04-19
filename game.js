@@ -6,7 +6,7 @@ export class Game {
 		this.currentSelection;
 		this.currentLocation;
 		this.validMovesArray;
-		this.boardHistory = [];
+		this.boardHistory;
 		this.boardState = [
 			[["row"], ["knw"], ["biw"], ["quw"], ["kiw"], ["biw"], ["knw"], ["row"]],
 			[["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"], ["paw"]],
