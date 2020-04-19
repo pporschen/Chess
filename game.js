@@ -29,6 +29,7 @@ export class Game {
 	updateGameStatus(hit, pieces, positionY, positionX) {
 		this.boardState[positionY][positionX] = [this.currentSelection];
 		this.promotion(positionY, positionX);
+		this.castling(positionY, positionX);
 		this.boardState[this.currentLocation[0]][this.currentLocation[1]] = [];
 		pieces[this.currentSelection].initial = false;
 
@@ -77,8 +78,50 @@ export class Game {
 	}
 
 	promotion(positionY, positionX) {
-		console.log(this.currentLocation);
 		if (this.currentSelection === "paw" && this.currentLocation[0] === 6) this.boardState[positionY][positionX] = "quw";
 		if (this.currentSelection === "pab" && this.currentLocation[0] === 1) this.boardState[positionY][positionX] = "qub";
+	}
+
+	castling(positionY, positionX) {
+		if (
+			this.currentSelection === "kiw" &&
+			this.currentLocation[0] === 0 &&
+			this.currentLocation[1] === 4 &&
+			positionY === 0 &&
+			positionX === 2
+		) {
+			this.boardState[0][0] = "";
+			this.boardState[0][3] = "row";
+		}
+		if (
+			this.currentSelection === "kiw" &&
+			this.currentLocation[0] === 0 &&
+			this.currentLocation[1] === 4 &&
+			positionY === 0 &&
+			positionX === 6
+		) {
+			this.boardState[0][7] = "";
+			this.boardState[0][5] = "row";
+		}
+		if (
+			this.currentSelection === "kib" &&
+			this.currentLocation[0] === 7 &&
+			this.currentLocation[1] === 4 &&
+			positionY === 7 &&
+			positionX === 6
+		) {
+			this.boardState[7][7] = "";
+			this.boardState[7][5] = "row";
+		}
+		if (
+			this.currentSelection === "kib" &&
+			this.currentLocation[0] === 7 &&
+			this.currentLocation[1] === 4 &&
+			positionY === 7 &&
+			positionX === 2
+		) {
+			this.boardState[7][0] = "";
+			this.boardState[7][3] = "row";
+		}
 	}
 }

@@ -155,16 +155,32 @@ const pieces = {
 	},
 	kiw: {
 		name: "white-king",
-		pattern: (positionY, positionX) => [
-			[positionY + 1, positionX],
-			[positionY - 1, positionX],
-			[positionY, positionX + 1],
-			[positionY, positionX - 1],
-			[positionY + 1, positionX + 1],
-			[positionY - 1, positionX - 1],
-			[positionY - 1, positionX + 1],
-			[positionY + 1, positionX - 1],
-		],
+		pattern: (positionY, positionX) => {
+			const castling = [[10, 10]];
+			if (
+				pieces[game.boardState[0][0]].initial &&
+				pieces[game.boardState[0][4]].initial &&
+				game.boardState[0][1] + game.boardState[0][2] + game.boardState[0][3] === ""
+			)
+				castling.push([0, 2]);
+			if (
+				pieces[game.boardState[0][7]].initial &&
+				pieces[game.boardState[0][4]].initial &&
+				game.boardState[0][5] + game.boardState[0][6] === ""
+			)
+				castling.push([0, 6]);
+			return [
+				[positionY + 1, positionX],
+				[positionY - 1, positionX],
+				[positionY, positionX + 1],
+				[positionY, positionX - 1],
+				[positionY + 1, positionX + 1],
+				[positionY - 1, positionX - 1],
+				[positionY - 1, positionX + 1],
+				[positionY + 1, positionX - 1],
+				...castling,
+			];
+		},
 		color: "white",
 		colorId: 1,
 		initial: true,
@@ -323,16 +339,33 @@ const pieces = {
 	},
 	kib: {
 		name: "black-king",
-		pattern: (positionY, positionX) => [
-			[positionY + 1, positionX],
-			[positionY - 1, positionX],
-			[positionY, positionX + 1],
-			[positionY, positionX - 1],
-			[positionY + 1, positionX + 1],
-			[positionY - 1, positionX - 1],
-			[positionY - 1, positionX + 1],
-			[positionY + 1, positionX - 1],
-		],
+		pattern: (positionY, positionX) => {
+			const castling = [[10, 10]];
+			if (
+				pieces[game.boardState[7][0]].initial &&
+				pieces[game.boardState[7][4]].initial &&
+				game.boardState[7][1] + game.boardState[7][2] + game.boardState[7][3] === ""
+			)
+				castling.push([7, 2]);
+			if (
+				pieces[game.boardState[7][7]].initial &&
+				pieces[game.boardState[7][4]].initial &&
+				game.boardState[7][5] + game.boardState[7][6] === ""
+			)
+				castling.push([7, 6]);
+
+			return [
+				[positionY + 1, positionX],
+				[positionY - 1, positionX],
+				[positionY, positionX + 1],
+				[positionY, positionX - 1],
+				[positionY + 1, positionX + 1],
+				[positionY - 1, positionX - 1],
+				[positionY - 1, positionX + 1],
+				[positionY + 1, positionX - 1],
+				...castling,
+			];
+		},
 		color: "black",
 		colorId: -1,
 		initial: true,
@@ -352,6 +385,7 @@ for (let field of boardHTML) {
 		renderer.renderWarning("");
 		if (piece && pieces[piece].colorId === game.currentPlayer) {
 			game.pickPiece(event, positionY, positionX);
+			console.log(game.validMovesArray);
 		} else {
 			if (
 				game.currentSelection &&
@@ -360,7 +394,6 @@ for (let field of boardHTML) {
 				const hit = event.currentTarget.children[0].dataset.name;
 
 				game.updateGameStatus(hit, pieces, positionY, positionX);
-
 				renderer.render(game, pieces);
 				game.boardHistory.push(game.boardState);
 			} else {
