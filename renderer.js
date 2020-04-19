@@ -3,7 +3,6 @@ export class Renderer {
 		this.game = game;
 		this.pieces = pieces;
 		this.boardHTML = document.querySelectorAll(".field");
-		console.log(pieces);
 	}
 
 	render() {

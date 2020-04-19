@@ -28,8 +28,7 @@ export class Game {
 
 	updateGameStatus(hit, pieces, positionY, positionX) {
 		this.boardState[positionY][positionX] = [this.currentSelection];
-		this.promotion(positionY, positionX);
-		this.castling(positionY, positionX);
+		this.rulesCheck(positionY, positionX);
 		this.boardState[this.currentLocation[0]][this.currentLocation[1]] = [];
 		pieces[this.currentSelection].initial = false;
 
@@ -75,6 +74,12 @@ export class Game {
 			});
 		});
 		return [...temp[0], ...temp[1], ...temp[2], ...temp[3]];
+	}
+
+	rulesCheck(positionY, positionX) {
+		this.promotion(positionY, positionX);
+		this.castling(positionY, positionX);
+		this.check(positionY, positionX);
 	}
 
 	promotion(positionY, positionX) {
@@ -123,5 +128,14 @@ export class Game {
 			this.boardState[7][0] = "";
 			this.boardState[7][3] = "row";
 		}
+	}
+
+	check(positionY, positionX) {
+		let array = this.validMoves(positionY, positionX);
+		array = array.filter((x) => x[0] < 8 && x[0] >= 0 && x[1] < 8 && x[1] >= 0);
+		const checkCheck = array.map((x) => this.boardState[x[0]][x[1]][0]);
+
+		if (this.currentPlayer === 1 && checkCheck.includes("kib")) document.querySelector("#warning").innerHTML = "CHECK";
+		if (this.currentPlayer === -1 && checkCheck.includes("kiw")) document.querySelector("#warning").innerHTML = "CHECK";
 	}
 }

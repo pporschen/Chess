@@ -373,6 +373,7 @@ const pieces = {
 		rank: 1,
 	},
 };
+
 const boardHTML = document.querySelectorAll(".field");
 const game = new Game(pieces);
 const renderer = new Renderer(game, pieces);
@@ -385,7 +386,6 @@ for (let field of boardHTML) {
 		renderer.renderWarning("");
 		if (piece && pieces[piece].colorId === game.currentPlayer) {
 			game.pickPiece(event, positionY, positionX);
-			console.log(game.validMovesArray);
 		} else {
 			if (
 				game.currentSelection &&
