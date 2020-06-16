@@ -18,7 +18,7 @@ export class Renderer {
 				if (this.pieces[this.game.boardState[rows][columns]])
 					this.boardHTML[index].innerHTML = `<img class="pieces" data-name="${
 						this.game.boardState[rows][columns]
-					}" src="${this.pieces[this.game.boardState[rows][columns]].img}">`;
+						}" src="${this.pieces[this.game.boardState[rows][columns]].img}">`;
 				else this.boardHTML[index].innerHTML = '<div data-name=""></div>';
 			}
 		}

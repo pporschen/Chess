@@ -6,9 +6,9 @@ const pieces = {
 		name: "white-pawn",
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
-				game.boardState[positionY + 1][positionX - 1] || [],
+				game.boardState[positionY + 1] ? game.boardState[positionY + 1][positionX - 1] || [] : [],
 				game.boardState[positionY + 1] ? game.boardState[positionY + 1][positionX] : [],
-				game.boardState[positionY + 1][positionX + 1] || [],
+				game.boardState[positionY + 1] ? game.boardState[positionY + 1][positionX + 1] || [] : [],
 				game.boardState[positionY + 2] ? game.boardState[positionY + 2][positionX] : [],
 			];
 
@@ -192,9 +192,9 @@ const pieces = {
 		name: "black-pawn",
 		pattern: (positionY, positionX) => {
 			const lookAhead = [
-				game.boardState[positionY - 1][positionX - 1] || [],
+				game.boardState[positionY - 1] ? game.boardState[positionY - 1][positionX - 1] || [] : [],
 				game.boardState[positionY - 1] ? game.boardState[positionY - 1][positionX] : [],
-				game.boardState[positionY - 1][positionX + 1] || [],
+				game.boardState[positionY - 1] ? game.boardState[positionY - 1][positionX + 1] || [] : [],
 				game.boardState[positionY - 2] ? game.boardState[positionY - 2][positionX] : [],
 			];
 			return [
@@ -377,7 +377,6 @@ const pieces = {
 const boardHTML = document.querySelectorAll(".field");
 const game = new Game(pieces);
 const renderer = new Renderer(game, pieces);
-const undo = document.querySelector("#undo");
 
 for (let field of boardHTML) {
 	field.addEventListener("click", (event) => {
@@ -393,7 +392,6 @@ for (let field of boardHTML) {
 				game.validMovesArray.some((x) => JSON.stringify(x) === JSON.stringify([positionY, positionX]))
 			) {
 				const hit = event.currentTarget.children[0].dataset.name;
-
 				game.updateGameStatus(hit, pieces, positionY, positionX);
 				renderer.render(game, pieces);
 			} else {

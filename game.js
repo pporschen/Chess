@@ -14,7 +14,7 @@ export class Game {
 			[[], [], [], [], [], [], [], []],
 			[[], [], [], [], [], [], [], []],
 			[[], [], [], [], [], [], [], []],
-			[["pab"], ["paw"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"]],
+			[["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"], ["pab"]],
 			[["rob"], ["knb"], ["bib"], ["qub"], ["kib"], ["bib"], ["knb"], ["rob"]],
 		];
 		this.pieces = pieces;
@@ -27,9 +27,10 @@ export class Game {
 	}
 
 	updateGameStatus(hit, pieces, positionY, positionX) {
+
 		this.boardState[positionY][positionX] = [this.currentSelection];
-		this.rulesCheck(positionY, positionX);
 		this.boardState[this.currentLocation[0]][this.currentLocation[1]] = [];
+		this.rulesCheck(positionY, positionX);
 		pieces[this.currentSelection].initial = false;
 
 		if (hit) this[this.currentPlayer === 1 ? "blackLost" : "whiteLost"].push(hit);
@@ -83,8 +84,8 @@ export class Game {
 	}
 
 	promotion(positionY, positionX) {
-		if (this.currentSelection === "paw" && this.currentLocation[0] === 6) this.boardState[positionY][positionX] = "quw";
-		if (this.currentSelection === "pab" && this.currentLocation[0] === 1) this.boardState[positionY][positionX] = "qub";
+		if (this.currentSelection === "paw" && this.currentLocation[0] === 6) this.boardState[positionY][positionX] = ["quw"];
+		if (this.currentSelection === "pab" && this.currentLocation[0] === 1) this.boardState[positionY][positionX] = ["qub"];
 	}
 
 	castling(positionY, positionX) {
